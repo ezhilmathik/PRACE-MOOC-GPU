@@ -1,7 +1,7 @@
 ### Printing out _Hello World_ form GPU
 
 * Hello world program will just demonstrate how to
-print the `Hello World` from the CUDA Programming.
+print the `Hello World` from the **CUDA Programming**.
 The below code shows the simple **C programming**
 and simple **CUDA programming** to show the simple
 difference between **CPU** and **GPU** programming. 
@@ -32,13 +32,13 @@ int main()
 __global__ void cuda_function()
 {
    printf("Hello World from GPU!\n"); 
-    __syncthreads();               // to synchronize all threads
+    __syncthreads();                      // to synchronize all threads
 }
 
 int main()
 {
     cuda_function<<<1,1>>>();
-    cudaDeviceSynchronize();      // to synchronize device call
+    cudaDeviceSynchronize();              // to synchronize device call
     return 0;
 }
 ~~~  
