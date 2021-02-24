@@ -60,7 +60,7 @@ int main()
 How to compile:
 
 ~~~bash
-nvcc -arch=compute_70 device-quary.cu
+nvcc -arch=compute_70 device-quary.cu -run
 ~~~
 
 ~~~bash 
