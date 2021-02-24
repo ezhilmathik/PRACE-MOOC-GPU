@@ -61,7 +61,7 @@ How to compile:
 
 ~~~bash
 nvcc -arch=compute_70 device-quary.cu
-~~~bash
+~~~
 
 ~~~bash 
 CUDA Device Query...
