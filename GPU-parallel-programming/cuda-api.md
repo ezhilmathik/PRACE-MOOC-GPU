@@ -8,7 +8,7 @@ programming.
 ####  Function type qualifiers: 
 
 | Qualifier               | Description   |
-| :---| ---: |
+|-------|------------------------|
 | `__device__ `       | These functions are executed only from device.              |
 | `__global__`        | These functions are executed form the device; and it can be callable from the host       |
 | `__host__`          |  These functions are executed from device; and callable from the host | 
