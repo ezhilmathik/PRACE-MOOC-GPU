@@ -19,6 +19,7 @@ void vector_add(float *x, float *y, int N)
 int main(void)
 {
   int N = 20;
+  // Initializing the two vectors
   float *x, *y;
   
   // Allocate Unified Memory -- accessible from CPU or GPU
