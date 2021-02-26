@@ -4,22 +4,22 @@
 using namespace std;
 
 __global__ void matrix_mul(float* d_a, float* d_b,
-			   float* d_c, int Width) 
+			   float* d_c, int width) 
 {
   
-  int tx = blockIdx.x * blockDim.x + threadIdx.x;
-  int ty = blockIdx.y * blockDim.y + threadIdx.y;
+  int row = blockIdx.x * blockDim.x + threadIdx.x;
+  int col = blockIdx.y * blockDim.y + threadIdx.y;
     
-  if ((tx < Width) && (ty < Width)) 
+  if ((row < width) && (col < width)) 
     {
-      float Pvalue = 0;
+      float single_entry = 0;
       // each thread computes one 
       // element of the block sub-matrix
-      for (int k = 0; k < Width; ++k) 
+      for (int i = 0; i < width; ++i) 
 	{
-	  Pvalue += d_a[tx*Width+k]*d_b[k*Width+ty];
+	  single_entry += d_a[row*width+i]*d_b[i*width+col];
 	}
-      d_c[tx*Width+ty] = Pvalue;
+      d_c[row*width+col] = single_entry;
     }
 }
 
@@ -28,7 +28,7 @@ int main()
   
   cout << "Programme assumes that matrix size is N*N "<<endl;
   cout << "Please enter the N size number "<< endl;
-  int N=0;
+  int N = 0;
   cin >> N;
 
   // Initialize the memory on the host
