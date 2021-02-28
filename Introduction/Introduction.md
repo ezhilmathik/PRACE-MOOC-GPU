@@ -1,3 +1,5 @@
+## Part 1
+
 Presently there are many [GPU vendors](https://www.jonpeddie.com/reports/market-watch/)
 available in the market for GPU architecture, in particular,
 AMD, Nvidia, and Intel. But Nvidia shares a large percentage.
@@ -27,6 +29,8 @@ is a programming language that uses to program the Nvidia GPUs.
 * Code optimization & profilling (fine-tuning and profiling technique).
 
 
+## Part 2
+
 ### GPU architecture
 
 * GPU has many cores: In general GPU has many cores compare
@@ -39,17 +43,17 @@ is a programming language that uses to program the Nvidia GPUs.
 *Figure 1: CPU vs GPU archietecture* [source](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#introduction)
 
 
-* In the GPU, cores are grouped into GPU Processing Clusters
-  (GPCs) and each GPCs has its own Streaming Multiprocessors
-  (SMs) and Texture Processor Clusters (TPCs). 
+* In the GPU, cores are grouped into `GPU Processing Clusters`
+  (GPCs) and each GPCs has its own `Streaming Multiprocessors
+  (SMs)` and `Texture Processor Clusters (TPCs)`. 
 
 ![figure](https://drive.google.com/uc?export=view&id=1RRDH7Wfaz8Vo3ueJl-mg1XW83Wd5QwaY)
 *Figure 1: GPCs, SMs and TPCs* [source](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#introduction)
 
 
 * Streaming multiprocessors in the GPU are capable of running
-  multiple threads concurrently; this is called a single
-  instruction multiple thread (SIMT) architecture.
+  multiple threads concurrently; this is called a `Single
+  Instruction Multiple Thread (SIMT)` architecture.
   SIMT enables programmers to achieve thread level parallelism
   by using a single instruction with multiple threads that can handle multiple data. 
 
@@ -58,16 +62,16 @@ is a programming language that uses to program the Nvidia GPUs.
   texture memory and global memory are shared among the multiple streaming multiprocessor.
 
 * SMs in the GPU are based on the scalable array multi-thread,
-  which allows grid and thread blocks of 1D, 2D, and 3D data.
+  which allows grid and thread blocks of `1D`, `2D`, and `3D` data.
   Therefore, programmers can write the grid and block size to
   create a thread when executing the device kernel; this thread
-  block is called a cooperative thread array (CTA). GPU performance can be
-  improved if the “latency” is hidden; latency is the number of clock cycles needed
-  to execute the next warp in the SM. Each SM has single-precision CUDA cores,
-  double-precision units, special function units, and load/store units.
+  block is called a `Cooperative Thread Array (CTA)`. GPU performance can be
+  improved if the **latency** is hidden; latency is the number of clock cycles needed
+  to execute the next warp in the SM. Each SM has `single-precision CUDA cores`,
+  `double-precision units`, `special function units`, and `load/store units`.
 
-* A parallel execution is happening in the SMs and also in the“warps”.
-  One warp contains 32 threads; warps can spawn across the SMs,
+* A parallel execution is happening in the SMs and also in the **warps**.
+  One warp contains `32 threads`; warps can spawn across the SMs,
   and each warp has their own instructions and registers.
   The multiprocessor occupancy is the ratio of active warps
   to the maximum number of warps supported on a multiprocessor of
@@ -85,12 +89,12 @@ is a programming language that uses to program the Nvidia GPUs.
 * Each and every updated architecture have more advanced
   features compared to their previous releases. 
 * There are different GPUs that are available
-  based on each and every Nvidia microarchitecture.
+  based on each and every `Nvidia microarchitecture`.
 
 
 ### [Compute capabilities](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capability)
 * Nvidia GPUs features can be explored by programmers by
-  using the compute capabilities. These compute capabilities
+  using the `compute capabilities`. These compute capabilities
   determine the different functions that can be used by the programmer.
   Each and every Nvidia microarchitecture has it's own compute
   capabilities, and usually, they are evoked in the
@@ -111,7 +115,7 @@ is a programming language that uses to program the Nvidia GPUs.
 
 ### [Nvidia NVLink](https://www.nvidia.com/en-us/design-visualization/nvlink-bridges/) 
 
-* NVLink is the latest technology from the Nvidia that connects
+* `NVLink` is the latest technology from the Nvidia that connects
   the multiple GPU, which would transfer the data between
   the GPUs much faster compared to traditional PCIe-based solutions.
   Figure 3 shows how the GPUs are connected together using
@@ -123,11 +127,6 @@ is a programming language that uses to program the Nvidia GPUs.
 
 ![figure](https://drive.google.com/uc?export=view&id=1IoVsFEDfP2kFaTOGvDe8flPncBmxPSOD)
 *Figure 4: Nvidia NVLink* [source](https://www.nvidia.com/en-us/data-center/nvlink/)
-
-
-
-
-
 
 ### Understanding Your GPUs
 
@@ -167,7 +166,7 @@ Kernel execution timeout:      No
 ~~~
 
 
-
+## Part 3
 
 
 
