@@ -26,6 +26,7 @@ contains
 end module Matrix_Multiplication_Mod
 
 program main
+  use openacc
   use Matrix_Multiplication_Mod
   implicit none
   ! Input vectors

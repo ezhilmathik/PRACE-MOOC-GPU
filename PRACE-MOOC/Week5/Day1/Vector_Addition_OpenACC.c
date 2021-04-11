@@ -3,6 +3,7 @@
 #include <math.h>
 #include <assert.h>
 #include <time.h>
+#include <openacc.h>
 
 #define MAX_ERR 1e-6
 

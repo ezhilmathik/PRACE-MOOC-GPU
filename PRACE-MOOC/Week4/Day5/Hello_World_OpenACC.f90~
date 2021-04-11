@@ -8,7 +8,6 @@ subroutine Print_Hello_World()
 end subroutine Print_Hello_World
 
 program main
-  use openacc
   implicit none
   call Print_Hello_World()
 end program main

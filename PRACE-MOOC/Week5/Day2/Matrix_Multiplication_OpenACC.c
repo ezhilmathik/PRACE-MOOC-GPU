@@ -1,6 +1,7 @@
 //-*-C++-*-
 #include<stdio.h>
 #include<stdlib.h>
+#include<openacc.h>
 
 void Matrix_Multiplication(float *a, float *b, float *restrict c, int width)   
 { 

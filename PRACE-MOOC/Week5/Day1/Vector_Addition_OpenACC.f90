@@ -16,6 +16,7 @@ contains
 end module Vector_Addition_Mod
 
 program main
+  use openacc
   use Vector_Addition_Mod
   implicit none
   
