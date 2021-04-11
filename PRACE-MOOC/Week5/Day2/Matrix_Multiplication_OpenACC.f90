@@ -9,8 +9,8 @@ contains
     real(8) :: sum = 0
     integer :: i, row, col, width, length 
     length = width*width
-    !$acc kernels loop collapse(3) reduction(+:sum) !!copyin(a(1:length), b(1:length)) copyout(c(1:length))
-!    !$acc loop collapse(3) reduction(+:sum)
+    !$acc kernels copyin(a(1:length), b(1:length)) copyout(c(1:length))
+    !$acc loop collapse(3) reduction(+:sum)
     do row = 0, width-1
        do col = 0, width-1        
           do i = 0, width-1

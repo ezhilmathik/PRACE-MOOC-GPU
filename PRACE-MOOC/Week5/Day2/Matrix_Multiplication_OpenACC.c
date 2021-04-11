@@ -6,8 +6,8 @@ void Matrix_Multiplication(float *a, float *b, float *restrict c, int width)
 { 
   int length = width*width;
   float sum = 0;
-#pragma acc parallel loop private(i) //copyin(a[0:(length)], b[0:(length)]) copyout(c[0:(length)]) 
-  //#pragma acc loop //collapse(3) reduction (+:sum) 
+#pragma acc kernels copyin(a[0:(length)], b[0:(length)]) copyout(c[0:(length)]) 
+#pragma acc loop collapse(3) reduction (+:sum) 
   for(int row = 0; row < width ; ++row)                           
     {                                                             
       for(int col = 0; col < width ; ++col)                       

@@ -20,8 +20,7 @@ void Matrix_Multiplication(float *a, float *b, float *restrict c, int width)
 }
 
 int main()
-{
-  
+{  
   printf("Programme assumes that matrix size is N*N \n");
   printf("Please enter the N size number \n");
   int N =0;
