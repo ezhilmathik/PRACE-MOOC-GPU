@@ -43,7 +43,7 @@ int main()
 #pragma acc enter data copyin(a[0:N], b[0:N]) create(c[0:N])  
   // Executing Vector Addition funtion 
   // Vector_Addition(a, b, c, N);
-#pragma acc kernels loop 
+#pragma acc parallel loop 
   for(int i = 0; i < N; i ++)
     {
       c[i] = a[i] + b[i];
