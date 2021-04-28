@@ -4,9 +4,8 @@
 
 void Print_Hello_World()    
 {
-  int i = 0, N = 5;    
 #pragma acc kernels
-  for(i = 0; i < N; i++)
+  for(int i = 0; i < 5; i++)
     {                                
       printf("Hello World!\n");
     }

@@ -1,11 +1,11 @@
 //-*-C++-*-
-#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
 
-using namespace std;
+float * Matrix_Multiplication(float *h_a, float *h_b, float *h_c, int width)   
+{ 
 
-
-float * matrix_mul(float *h_a, float *h_b, float *h_c, int width)   
-{                                                                 
+#pragma acc parallel copyin(h_a[0:(width*width)],h_b[0:(width*width)]), copyout(h_c[0:(width*width)])                                                                
   for(int row = 0; row < width ; ++row)                           
     {                                                             
       for(int col = 0; col < width ; ++col)                       
@@ -24,18 +24,18 @@ float * matrix_mul(float *h_a, float *h_b, float *h_c, int width)
 int main()
 {
   
-  cout << "Programme assumes that matrix size is N*N "<<endl;
-  cout << "Please enter the N size number "<< endl;
-  int N = 0;
-  cin >> N;
+  printf("Programme assumes that matrix size is N*N \n");
+  printf("Please enter the N size number \n");
+  int N =0;
+  scanf("%d", &N);
 
   // Initialize the memory on the host
   float *a, *b, *c;       
     
   // Allocate host memory
-  a   = (float*)malloc(sizeof(float) * (N*N));
-  b   = (float*)malloc(sizeof(float) * (N*N));
-  c   = (float*)malloc(sizeof(float) * (N*N));
+  a = (float*)malloc(sizeof(float) * (N*N));
+  b = (float*)malloc(sizeof(float) * (N*N));
+  c = (float*)malloc(sizeof(float) * (N*N));
   
   // Initialize host arrays
   for(int i = 0; i < (N*N); i++)
@@ -45,18 +45,19 @@ int main()
     }
    
   // Device fuction call 
-  matrix_mul(a, b, c, N);
-
+  Matrix_Multiplication(a, b, c, N);
+  
   // Verification
   for(int i = 0; i < N; i++)
     {
       for(int j = 0; j < N; j++)
       	{
-	  cout << c[j] <<" ";
+	  printf("%f ", c[j]);
+
 	}
-      cout << " " <<endl;
+      printf("\n");
     }
-    
+  
   // Deallocate host memory
   free(a); 
   free(b); 

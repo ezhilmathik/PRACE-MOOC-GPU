@@ -2,8 +2,7 @@
 #include <stdio.h>              
 void Print_Hello_World()    
 {
-  int i=0,N=5;    
-  for(i = 0; i < N; i++)
+  for(int i = 0; i < 5; i++)
     {                                
       printf("Hello World!\n");
     }
