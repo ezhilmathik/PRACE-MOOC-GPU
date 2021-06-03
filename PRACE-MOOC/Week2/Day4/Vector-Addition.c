@@ -42,7 +42,7 @@ int main()
 
   // Stop measuring time and calculate the elapsed time
   clock_t end = clock();
-  double elapsed = double(end - start)/CLOCKS_PER_SEC;
+  double elapsed = (double)(end - start)/CLOCKS_PER_SEC;
         
   printf("Time measured: %.3f seconds.\n", elapsed);
   
