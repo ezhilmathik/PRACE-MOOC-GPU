@@ -302,6 +302,7 @@ int main()
 }
 ~~~
 
+## Day 3
 
 ## CUDA Streams
 
