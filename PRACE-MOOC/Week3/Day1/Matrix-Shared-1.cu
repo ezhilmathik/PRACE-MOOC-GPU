@@ -1,40 +1,30 @@
 //-*-C++-*-
 #include<iostream>
-
-#define TILE_WIDTH 10
-#define TILE_DIM 10
-
 using namespace std;
 
+//#define TILE_WIDTH 10
+#define TILE_DIM 8
 
-//__device__ float aTile[TILE_WIDTH][TILE_WIDTH];
-__global__ void matrix_mul(float *a, float* b, float *c,
-                                  int width)
+__global__ void coalescedMultiply(float *a, float* b, float *c, int N)
 {
-
   __shared__ float aTile[TILE_DIM][TILE_DIM];
-
+  
   int row = blockIdx.y * blockDim.y + threadIdx.y;
   int col = blockIdx.x * blockDim.x + threadIdx.x;
-
-  //int row = blockIdx.y * TILE_WIDTH + threadIdx.y;
-  //int col = blockIdx.x * TILE_WIDTH + threadIdx.x;
+  float sum = 0.0f;
   
-  float single_entry = 0.0f;
-  aTile[threadIdx.y][threadIdx.x] = a[row*TILE_DIM+threadIdx.x];
-  __syncwarp();
-  if (row < width && col < width)
+  for (int p = 0; p < N/TILE_DIM; p++)
     {
-      for (int i = 0; i < width; i++) 
+      aTile[threadIdx.y][threadIdx.x] = a[row*N + (p*TILE_DIM + threadIdx.x)];
+      __syncthreads();
+      for (int i = 0; i < TILE_DIM; i++)
 	{
-	  single_entry += aTile[threadIdx.y][i]* b[i*width+col];
-	  //single_entry += a[row*width+col] *  b[i*width+col];
+	  sum += aTile[threadIdx.y][i]* b[i*N+col];
 	}
-      c[row*width+col] = single_entry;
-
+      __syncthreads();
     }
+  c[row*N+col] = sum;
 }
-
 
 
 int main()
@@ -78,9 +68,12 @@ int main()
   dim3 dimBlock(blockSize,blockSize,1);
   dim3 dimGrid(ceil(N/float(blockSize)),ceil(N/float(blockSize)),1);
   
+  //  cout << dimBlock(blockSize,blockSize,1) << endl;
+  //  cout << dimGrid(ceil(N/float(blockSize)),ceil(N/float(blockSize)),1) << endl;
+  
   // Device fuction call 
-  matrix_mul<<<dimGrid,dimBlock>>>(d_a, d_b, d_c, N);
-
+  //  matrix_mul<<<dimGrid,dimBlock>>>(d_a, d_b, d_c, N);
+  coalescedMultiply<<<dimGrid,dimBlock>>>(d_a, d_b, d_c, N);
   // Transfer data back to host memory
   cudaMemcpy(c, d_c, sizeof(float) * (N*N), cudaMemcpyDeviceToHost);
 
