@@ -1,36 +1,30 @@
 //-*-C++-*-
 #include<iostream>
-#define TILE_WIDTH 2
-#define TILE_DIM 2
-
-#define blockD 32
-
 using namespace std;
 
-//__device__ float aTile[TILE_WIDTH][TILE_WIDTH];
-//__device__ float bTile[TILE_WIDTH][TILE_WIDTH];
+#define TILE_DIM 8
 
-__global__ void matrix_mul(float *a, float* b, float *c, int width)
+__global__ void coalescedMultiply(float *a, float* b, float *c, int N)
 {
-  //  cont int TILE_DIM=2;
-    __shared__ float aTile[TILE_DIM][TILE_DIM];
-    __shared__ float bTile[TILE_DIM][TILE_DIM];
-
+  __shared__ float aTile[TILE_DIM][TILE_DIM];
+  __shared__ float bTile[TILE_DIM][TILE_DIM];
+  
   int row = blockIdx.y * blockDim.y + threadIdx.y;
   int col = blockIdx.x * blockDim.x + threadIdx.x;
-    
-  aTile[threadIdx.y][threadIdx.x] = a[row*TILE_DIM+threadIdx.x];    
-  bTile[threadIdx.y][threadIdx.x] = b[threadIdx.y*width+col];
-
-  __syncthreads();
-
-  float single_entry = 0.0f;    
-  for (int i = 0; i < width; i++) 
-    { 
-      single_entry += aTile[threadIdx.y][i]* bTile[i][threadIdx.x];    
-    }   
-  c[row*width+col] = single_entry;
-
+  float sum = 0.0f;
+  
+  for (int j = 0; j < N/TILE_DIM; j++)
+    {
+      aTile[threadIdx.y][threadIdx.x] = a[row*N + (j*TILE_DIM + threadIdx.x)];
+      bTile[threadIdx.y][threadIdx.x] = b[(j*TILE_DIM + threadIdx.y)*N + col];
+      __syncthreads();
+      for (int i = 0; i < TILE_DIM; i++)
+	{
+	  sum += aTile[threadIdx.y][i]* bTile[i][threadIdx.x];
+	}
+      __syncthreads();
+    }
+  c[row*N+col] = sum;
 }
 
 
@@ -57,6 +51,7 @@ int main()
     {
       a[i] = 2.0f;
       b[i] = 2.0f;
+      c[i] = 2.0f;
     }
   
   // Allocate device memory
@@ -67,16 +62,19 @@ int main()
   // Transfer data from host to device memory
   cudaMemcpy(d_a, a, sizeof(float) * (N*N), cudaMemcpyHostToDevice);
   cudaMemcpy(d_b, b, sizeof(float) * (N*N), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_c, c, sizeof(float) * (N*N), cudaMemcpyHostToDevice);
   
   // Thread organization
   int blockSize = 32;
   dim3 dimBlock(blockSize,blockSize,1);
   dim3 dimGrid(ceil(N/float(blockSize)),ceil(N/float(blockSize)),1);
-
+  
+  //  cout << dimBlock(blockSize,blockSize,1) << endl;
+  //  cout << dimGrid(ceil(N/float(blockSize)),ceil(N/float(blockSize)),1) << endl;
   
   // Device fuction call 
-  matrix_mul<<<dimGrid,dimBlock>>>(d_a, d_b, d_c, N);
-
+  //  matrix_mul<<<dimGrid,dimBlock>>>(d_a, d_b, d_c, N);
+  coalescedMultiply<<<dimGrid,dimBlock>>>(d_a, d_b, d_c, N);
   // Transfer data back to host memory
   cudaMemcpy(c, d_c, sizeof(float) * (N*N), cudaMemcpyDeviceToHost);
 
